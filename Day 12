@@ -1,0 +1,16 @@
+class Solution {
+public:
+    int largestCombination(vector<int>& candidates) {
+        int maxCombinationSize = 0;
+        for (int bit = 0; bit < 24; ++bit) {
+            int currentCount = 0;
+            for (int num : candidates) {
+                if (num & (1 << bit)) {
+                    currentCount++;
+                }
+            }
+            maxCombinationSize = max(maxCombinationSize, currentCount);
+        }
+        return maxCombinationSize;
+    }
+};
