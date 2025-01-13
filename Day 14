@@ -1,0 +1,22 @@
+class Solution {
+public:
+    long long minEnd(int n, int x) {
+        vector<short> zeroBitPositions;
+        long long result = x;
+        long long bitsToSet = n - 1;
+        for (int i = 0; i < 32; i++) {
+            if ((x & (1 << i)) == 0) {
+                zeroBitPositions.push_back(i);
+            }
+        }
+        for (int i = 32; i < 64; i++) {
+            zeroBitPositions.push_back(i);
+        }
+        for (int i = 0; bitsToSet > 0; i++, bitsToSet >>= 1) {
+            if (bitsToSet & 1) {
+                result += (1LL << zeroBitPositions[i]);
+            }
+        }
+        return result;
+    }
+};
