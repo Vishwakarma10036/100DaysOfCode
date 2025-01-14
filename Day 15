@@ -1,0 +1,43 @@
+class Solution {
+public:
+    bitset<30> B;
+    int k;
+    int minimumSubarrayLength(const std::vector<int>& nums, int k) {
+        if (k == 0) return 1;
+        this->k = k;
+        B = bitset<30>(k);
+        std::vector<unsigned> freq(30, 0);
+        int n = nums.size(), ans = INT_MAX;
+        for (int l = 0, r = 0; r < n; r++) {
+            if (nums[r] >= k) return 1;
+            bitset<30> b(nums[r]);
+            for (int i = 0; i < 30; i++) {
+                freq[i] += b[i];
+            }
+            int b_val = 0;
+            for (int i = 0; i < 30; i++) {
+                if (freq[i] > 0) b_val |= (1 << i);
+            }
+            while (l < n && b_val >= k) {
+                ans = std::min(ans, r - l + 1);
+                bitset<30> b(nums[l]);
+                for (int i = 0; i < 30; i++) {
+                    freq[i] -= b[i];
+                }
+                l++;
+                b_val = 0;
+                for (int i = 0; i < 30; i++) {
+                    if (freq[i] > 0) b_val |= (1 << i);
+                }
+            }
+        }
+        return (ans == INT_MAX) ? -1 : ans;
+    }
+};
+
+auto init = []() {
+    std::ios::sync_with_stdio(0);
+    std::cin.tie(0);
+    std::cout.tie(0);
+    return 0;
+}();
