@@ -1,0 +1,32 @@
+class Solution {
+public:
+    vector<int> maximumBeauty(vector<vector<int>>& items, vector<int>& queries) {
+        sort(items.begin(), items.end());
+        vector<pair<int, int>> processed_items;
+        int max_beauty = 0;
+        for (const auto& item : items) {
+            max_beauty = max(max_beauty, item[1]);
+            processed_items.emplace_back(item[0], max_beauty);
+        }
+        map<int, int> query_results;
+        for (int query : queries) {
+            int low = 0, high = processed_items.size() - 1, best_beauty = 0;
+            while (low <= high) {
+                int mid = low + (high - low) / 2;
+                if (processed_items[mid].first <= query) {
+                    best_beauty = processed_items[mid].second;
+                    low = mid + 1;
+                } else {
+                    high = mid - 1;
+                }
+            }
+            query_results[query] = best_beauty;
+        }
+        vector<int> answer;
+        answer.reserve(queries.size());
+        for (int query : queries) {
+            answer.push_back(query_results[query]);
+        }
+        return answer;
+    }
+};
