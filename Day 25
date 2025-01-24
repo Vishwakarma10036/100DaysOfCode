@@ -1,0 +1,26 @@
+class Solution {
+public:
+    int takeCharacters(string s, int k) {
+        if (k == 0) return 0;
+        vector<int> total(3, 0);
+        for (char c : s) {
+            total[c - 'a']++;
+        }
+        for (int count : total) {
+            if (count < k) return -1;
+        }
+        int n = s.size();
+        vector<int> current(3, 0);
+        int maxMiddle = 0;
+        int left = 0;
+        for (int right = 0; right < n; ++right) {
+            current[s[right] - 'a']++;
+            while (current[s[right] - 'a'] > total[s[right] - 'a'] - k) {
+                current[s[left] - 'a']--;
+                ++left;
+            }
+            maxMiddle = max(maxMiddle, right - left + 1);
+        }
+        return n - maxMiddle;
+    }
+};
