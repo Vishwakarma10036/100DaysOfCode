@@ -1,0 +1,21 @@
+class Solution {
+public:
+    int maxEqualRowsAfterFlips(vector<vector<int>>& matrix) {
+        unordered_map<string, int> ptrnCount;
+
+        for (const auto& row : matrix) {
+            string normalPtrn, flippedPtrn;
+            for (int cell : row) {
+                normalPtrn += to_string(cell);
+                flippedPtrn += to_string(1 - cell);
+            }
+            ptrnCount[normalPtrn]++;
+            ptrnCount[flippedPtrn]++;
+        }
+        int maxRows = 0;
+        for (const auto& entry : ptrnCount) {
+            maxRows = max(maxRows, entry.second);
+        }
+        return maxRows;
+    }
+};
